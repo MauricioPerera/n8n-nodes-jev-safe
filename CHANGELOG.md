@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.1 (September 26, 2026)
+
+- Published from GitHub Actions with npm provenance for n8n community-node verification. No runtime changes.
+
 ## 0.3.0 (September 26, 2026)
 
 - Added direct Choice, Noul, and Score operations while retaining multi-question requests and Choice routing.
