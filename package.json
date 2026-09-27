@@ -4,11 +4,11 @@
 	"description": "Use TypeSafe's Jev API in n8n for Choice, Noul, and Score questions.",
 	"license": "MIT",
 	"author": {
-		"name": "MauricioPerera",
+		"name": "rckflr",
 		"email": "mauricio.perera@gmail.com"
 	},
 	"homepage": "https://github.com/MauricioPerera/n8n-nodes-jev-safe#readme",
-	"repository": { "type": "git", "url": "https://github.com/MauricioPerera/n8n-nodes-jev-safe.git" },
+	"repository": { "type": "git", "url": "git+https://github.com/MauricioPerera/n8n-nodes-jev-safe.git" },
 	"bugs": { "url": "https://github.com/MauricioPerera/n8n-nodes-jev-safe/issues" },
 	"keywords": [
 		"n8n-community-node-package",
