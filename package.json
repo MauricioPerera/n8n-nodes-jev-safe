@@ -1,0 +1,63 @@
+{
+	"name": "n8n-nodes-jev-safe",
+	"version": "0.3.0",
+	"description": "Use TypeSafe's Jev API in n8n for Choice, Noul, and Score questions.",
+	"license": "MIT",
+	"author": {
+		"name": "MauricioPerera",
+		"email": "mauricio.perera@gmail.com"
+	},
+	"homepage": "https://github.com/MauricioPerera/n8n-nodes-jev-safe#readme",
+	"repository": { "type": "git", "url": "https://github.com/MauricioPerera/n8n-nodes-jev-safe.git" },
+	"bugs": { "url": "https://github.com/MauricioPerera/n8n-nodes-jev-safe/issues" },
+	"keywords": [
+		"n8n-community-node-package",
+		"n8n",
+		"n8n-node",
+		"jev",
+		"typesafe",
+		"classification",
+		"text-classification",
+		"routing",
+		"triage",
+		"moderation",
+		"guardrails",
+		"workflow-automation"
+	],
+	"scripts": {
+		"build": "n8n-node build",
+		"build:watch": "tsc --watch",
+		"dev": "n8n-node dev",
+		"lint": "n8n-node lint",
+		"lint:fix": "n8n-node lint --fix",
+		"test": "vitest run",
+		"test:watch": "vitest",
+		"typecheck": "tsc --noEmit -p test/tsconfig.json"
+	},
+	"files": [
+		"dist",
+		"!dist/docs",
+		"!dist/**/*.tsbuildinfo"
+	],
+	"n8n": {
+		"n8nNodesApiVersion": 1,
+		"strict": true,
+		"credentials": [
+			"dist/credentials/JevApi.credentials.js"
+		],
+		"nodes": [
+			"dist/nodes/Jev/JevSafe.node.js"
+		]
+	},
+	"devDependencies": {
+		"@n8n/node-cli": "*",
+		"eslint": "9.39.4",
+		"prettier": "3.8.3",
+		"release-it": "20.2.0",
+		"typescript": "5.9.3",
+		"vitest": "5.0.1"
+	},
+	"peerDependencies": {
+		"n8n-workflow": "*"
+	}
+}

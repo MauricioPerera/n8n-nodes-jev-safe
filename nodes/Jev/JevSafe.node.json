@@ -1,0 +1,10 @@
+{
+	"node": "n8n-nodes-jev-safe.jevSafe",
+	"nodeVersion": "1.0",
+	"codexVersion": "1.0",
+	"categories": ["AI", "Development"],
+	"resources": {
+		"credentialDocumentation": [{ "url": "https://docs.typesafe.ai/introduction/quickstart" }],
+		"primaryDocumentation": [{ "url": "https://docs.typesafe.ai/introduction/quickstart" }]
+	}
+}

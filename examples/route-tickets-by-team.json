@@ -1,0 +1,206 @@
+{
+	"name": "Jev example: Route tickets by team (Route by Choice)",
+	"nodes": [
+		{
+			"parameters": {},
+			"id": "d5573090-fa58-4f4e-92fa-1d46bfedbb32",
+			"name": "When clicking ‘Execute workflow’",
+			"type": "n8n-nodes-base.manualTrigger",
+			"typeVersion": 1,
+			"position": [
+				0,
+				300
+			]
+		},
+		{
+			"parameters": {
+				"jsCode": "// Sample support tickets. Replace this node with your helpdesk trigger (Zendesk, Intercom, Gmail, ...).\nreturn [\n  { ticket_id: 'T-1001', message: \"Hi, I've been trying to connect my Stripe account for 3 days and it keeps failing. I'm losing sales. Please help ASAP.\" },\n  { ticket_id: 'T-1002', message: 'I was charged twice for order A-104 this month. Can you refund the duplicate charge?' },\n  { ticket_id: 'T-1003', message: \"We're a team of 40 and thinking about moving to the Enterprise plan. Can someone walk us through pricing?\" },\n  { ticket_id: 'T-1004', message: 'THIS IS THE THIRD TIME THE DASHBOARD HAS CRASHED TODAY. Fix it or we cancel.' },\n  { ticket_id: 'T-1005', message: \"Since yesterday's update the invoices page crashes, and now I can't tell if my card was charged twice.\" },\n].map((json) => ({ json }));"
+			},
+			"id": "3fd2cb83-b37f-4e56-80d4-70352892d30f",
+			"name": "Sample tickets",
+			"type": "n8n-nodes-base.code",
+			"typeVersion": 2,
+			"position": [
+				220,
+				300
+			]
+		},
+		{
+			"parameters": {
+				"operation": "route",
+				"model": {
+					"__rl": true,
+					"mode": "list",
+					"value": "jev-latest",
+					"cachedResultName": "jev-latest"
+				},
+				"stateSource": "text",
+				"stateText": "={{ $json.message }}",
+				"routeInstructions": "Which team should handle this support ticket?",
+				"routes": {
+					"values": [
+						{
+							"name": "billing",
+							"description": "Payments, invoices, refunds, duplicate or unexpected charges"
+						},
+						{
+							"name": "technical",
+							"description": "Bugs, outages, crashes, errors, or integrations that fail"
+						},
+						{
+							"name": "sales",
+							"description": "Pricing, plans, upgrades, or new accounts"
+						}
+					]
+				},
+				"lowConfidence": "extraOutput",
+				"confidenceThreshold": 0.7,
+				"options": {}
+			},
+			"id": "cbabb93e-c8db-4227-bb33-6066127fba28",
+			"name": "Jev: Route to team",
+			"type": "n8n-nodes-jev-safe.jevSafe",
+			"typeVersion": 1,
+			"position": [
+				460,
+				300
+			],
+			"credentials": {
+				"jevSafeApi": {
+					"name": "Jev Safe (TypeSafe) account"
+				}
+			}
+		},
+		{
+			"parameters": {},
+			"id": "6f8812f1-6a02-48e0-916a-ffc40761a26a",
+			"name": "Billing queue",
+			"type": "n8n-nodes-base.noOp",
+			"typeVersion": 1,
+			"position": [
+				820,
+				60
+			]
+		},
+		{
+			"parameters": {},
+			"id": "889f90c4-4c3e-43b8-a424-d38417679b8d",
+			"name": "Technical queue",
+			"type": "n8n-nodes-base.noOp",
+			"typeVersion": 1,
+			"position": [
+				820,
+				240
+			]
+		},
+		{
+			"parameters": {},
+			"id": "0794dd29-2e3d-4d41-8716-8399ff93fcc9",
+			"name": "Sales queue",
+			"type": "n8n-nodes-base.noOp",
+			"typeVersion": 1,
+			"position": [
+				820,
+				420
+			]
+		},
+		{
+			"parameters": {},
+			"id": "4dd2527d-d5f2-4de8-8239-b244b4764cc0",
+			"name": "Human review",
+			"type": "n8n-nodes-base.noOp",
+			"typeVersion": 1,
+			"position": [
+				820,
+				600
+			]
+		},
+		{
+			"parameters": {
+				"content": "## Route tickets by team (Route by Choice)\n\nEach route becomes an **output** of the Jev node. The last output, **Low Confidence**, receives tickets Jev is unsure about (confidence < 0.7), such as a ticket that fits more than one team.\n\nEvery item carries `jev.route`, `jev.confidence` and `jev.probabilities`.\n\nReplace the No-Op nodes with your helpdesk actions (assign group, post to Slack, ...).\n\nSelect your **Jev credential** on the Jev node, then click **Execute workflow**.",
+				"width": 700,
+				"height": 300
+			},
+			"id": "84c17021-c7ab-4d30-a17e-a0f541d954a3",
+			"name": "Sticky Note 712c",
+			"type": "n8n-nodes-base.stickyNote",
+			"typeVersion": 1,
+			"position": [
+				-40,
+				-120
+			]
+		}
+	],
+	"connections": {
+		"When clicking ‘Execute workflow’": {
+			"main": [
+				[
+					{
+						"node": "Sample tickets",
+						"type": "main",
+						"index": 0
+					}
+				]
+			]
+		},
+		"Sample tickets": {
+			"main": [
+				[
+					{
+						"node": "Jev: Route to team",
+						"type": "main",
+						"index": 0
+					}
+				]
+			]
+		},
+		"Jev: Route to team": {
+			"main": [
+				[
+					{
+						"node": "Billing queue",
+						"type": "main",
+						"index": 0
+					}
+				],
+				[
+					{
+						"node": "Technical queue",
+						"type": "main",
+						"index": 0
+					}
+				],
+				[
+					{
+						"node": "Sales queue",
+						"type": "main",
+						"index": 0
+					}
+				],
+				[
+					{
+						"node": "Human review",
+						"type": "main",
+						"index": 0
+					}
+				],
+				[
+					{
+						"node": "Human review",
+						"type": "main",
+						"index": 0
+					}
+				]
+			]
+		}
+	},
+	"pinData": {},
+	"settings": {
+		"executionOrder": "v1"
+	},
+	"active": false,
+	"meta": {
+		"templateCredsSetupCompleted": false
+	},
+	"tags": []
+}
